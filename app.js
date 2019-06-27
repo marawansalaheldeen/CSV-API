@@ -1,6 +1,15 @@
+var express = require('express');
+var app = express();
+var con = require('./models/dbcon');
+var connection = con.connection;
+
 var fs = require('fs');
 var csv = require('csv-parser');
 var csvs = require('csv-stream');
+
+
+var apconrol = require('./controller/control');
+app.set('view engine','ejs');
 
 
 let csvStream = csvs.createStream()
@@ -17,6 +26,13 @@ var head = file.on('head',function(columns){
 		}
 })
 
+
 var data = file.on('data',function(data){
 	
 })
+
+
+apcontrol(app);
+port = 3000;
+var server = app.listen(port,()=> console.log(`app listen on port ${port}!`));
+
