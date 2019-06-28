@@ -12,17 +12,34 @@ module.exports = function(app){
 	
 let csvStream = csvs.createStream()
 
-var file = fs.createReadStream('mycsv.csv').pipe(csvStream);
-
-var data = file.on('data',function(data){
-	console.log(data)
-})
-var error = file.on('error',function(err){
-	console.log(err);
-})
-
-var head = file.on('header',function(columns){
-console.log(columns)
+app.get('/',(req,res)=>{
+	var file = fs.createReadStream('mycsv.csv').pipe(csvStream);
+	var head = file.on('header',function(columns){
 	
+	connection.query('CREATE TABLE datafile )',function(err,result){
+			console.log(err);
+			console.log(result);
+		});
+	res.render('index',{items:columns});
+	})
 })
+app.get('/data',(req,res)=>{
+	var file = fs.createReadStream('mycsv.csv').pipe(csvStream);
+	var data = file.on('data',function(data){
+		console.log(data)
+		//res.render('index',{items:data});
+	});
+})
+
+
+
+
+
+
+
+
+
+
+
+
 }
